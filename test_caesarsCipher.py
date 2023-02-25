@@ -1,13 +1,14 @@
 import unittest
+import string
 
 def encrypt(message):
-    encrypted_message = [idx for idx, char in enumerate(message)]
-    print(encrypted_message)
+    abc = string.ascii_letters + string.punctuation + string.digits + " "
+    encrypted_message = "".join([abc[abc.find(char) + 1] if len(abc) > (abc.find(char) + 1) else abc[0] for idx, char in enumerate(message)])
     return encrypted_message
 
 class TestEncryption(unittest.TestCase):
     def setUp(self):
-        self.my_message = "banana"
+        self.my_message = "banana bread"
     def test_inputExists(self):
         self.assertIsNotNone(self.my_message)
 
@@ -22,6 +23,15 @@ class TestEncryption(unittest.TestCase):
 
     def test_differentIO(self):
         self.assertNotIn(self.my_message, encrypt(self.my_message))
+
+    def test_outputType(self):
+        self.assertIsInstance(encrypt(self.my_message), str)
+
+    def test_shiftedCipher(self):
+        abc = string.ascii_letters + string.punctuation + string.digits + " "
+        encrypted_message = "".join([abc[abc.find(char) + 1] if len(abc) > (abc.find(char) + 1) else abc[0] for idx, char in enumerate(self.my_message)])
+        print (encrypted_message)
+        self.assertEqual(encrypted_message, encrypt(self.my_message))
 
     if __name__=="__main__":
         unittest.main()
